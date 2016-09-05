@@ -86,7 +86,7 @@ void CChildView::OnPaint()
 	//example03 直线扫描算法--数值微分法（DDA）
 	//实质还是y=kx+b;只是因为x的变化量为1,所以可以直接在y的基础上加k，实际上是+1*k
 	//A(20,20) B(400,100)蓝色直线段
-	float x1 = 400, y1 = 200, x2 = 20, y2 = 1000;
+	float x1 = 40, y1 = 20, x2 = 2000, y2 = 1000;
 	float x, y, k, b;
 	k = (y1 - y2) / (x1 - x2);
 	//b = y1 - k*x1;
@@ -106,11 +106,11 @@ void CChildView::OnPaint()
 		y2 = temp;
 	}
 	//4种情况：
-	//1. 0<k<1 	true	1
-	//2. k>1	true	2
-	//3. -1<k<0	false	2
-	//4. k<-1	false	1
-	if(fabs(k)<=1 ^ flag)
+	//1. 0<k<1 	true	走1
+	//2. k>1	true	走2
+	//3. -1<k<0	false	走2
+	//4. k<-1	false	走1
+	if((k>0 && k<1 && flag) || (k<-1 && !flag))
 	{
 		y = y1;
 		for (x = x1;x <= x2;x++)
@@ -120,12 +120,12 @@ void CChildView::OnPaint()
 			y = y + k;//因为在x的变化过程中,x的变化量为1
 		}
 	}
-	else if(fabs(k)<=1 ^ flag) {
+	else if((k<0 && k>-1 && !flag) || (k>1 && flag)) {
 		x = x1;
 		for (y = y1;y <= y2;y++)
 		{
 			dc.SetPixel(x, y, RGB(0, 0, 255));
-			x = x + 1/k;//因为在x的变化过程中,x的变化量为1
+			x = x + 1/k;//因为在x的变化过程中,x的变化量为1，斜率变成k的倒数
 		}
 	}
 
